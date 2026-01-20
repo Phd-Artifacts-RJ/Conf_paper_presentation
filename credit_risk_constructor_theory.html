@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explainable Credit Risk through Constructor Theory</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 20px;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+            font-style: italic;
+        }
+        
+        .main-diagram {
+            background: #f9f9f9;
+            border: 3px solid #1e3c72;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            background: #f5f5f5;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #1e3c72;
+        }
+        
+        .section h2 {
+            color: #1e3c72;
+            margin-top: 0;
+            font-size: 1.5em;
+        }
+        
+        .component {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #2a5298;
+        }
+        
+        .component-title {
+            font-weight: bold;
+            color: #2a5298;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+        
+        .component-content {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .notation {
+            font-family: 'Courier New', monospace;
+            background: #e8e8f0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .possible {
+            background: #e8f5e9;
+            border-left-color: #4caf50;
+        }
+        
+        .impossible {
+            background: #ffebee;
+            border-left-color: #f44336;
+        }
+        
+        .uncertain {
+            background: #fff3e0;
+            border-left-color: #ff9800;
+        }
+        
+        .arrow {
+            display: inline-block;
+            margin: 0 10px;
+            color: #1e3c72;
+            font-weight: bold;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .comparison-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+        
+        .comparison-item h4 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+        
+        .highlight-yellow {
+            background: #fff9c4;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .highlight-blue {
+            background: #bbdefb;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .box {
+            display: inline-block;
+            background: #1e3c72;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 10px;
+            font-weight: bold;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        .box-secondary {
+            background: #2a5298;
+        }
+        
+        .box-tertiary {
+            background: #4a7bc8;
+        }
+        
+        .flow-diagram {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .flow-arrow {
+            display: block;
+            color: #1e3c72;
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+        
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+        
+        .legend-symbol {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-right: 10px;
+            color: #1e3c72;
+            min-width: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background: #1e3c72;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .metric-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .badge-high {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .badge-medium {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .badge-low {
+            background: #f44336;
+            color: white;
+        }
+        
+        .insight-box {
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+            border: 2px solid #1e3c72;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .insight-box h3 {
+            color: #1e3c72;
+            margin-top: 0;
+        }
+        
+        ul {
+            line-height: 1.8;
+        }
+        
+        .framework-flow {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏛️ Explainable Credit Risk Analysis</h1>
+        <div class="subtitle">A Constructor Theory Perspective on Predictive AI and Explanation Reliability</div>
+        
+        <!-- SECTION 1: THE FUNDAMENTAL QUESTION -->
+        <div class="section">
+            <h2>1️⃣ THE FUNDAMENTAL QUESTION</h2>
+            
+            <div class="insight-box">
+                <h3>The Central Problem</h3>
+                <p style="font-size: 1.1em; line-height: 1.8;">
+                    In credit-risk modelling, we face a critical challenge: <strong>Does high predictive accuracy imply reliable explanations?</strong>
+                </p>
+                <p style="font-size: 1.05em; line-height: 1.8;">
+                    Traditional approaches assume that if a model predicts defaults well (high AUC), then its feature attributions (SHAP values) must be trustworthy. 
+                    <strong>This assumption is FALSE.</strong>
+                </p>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">Constructor Theory Framing</div>
+                <div class="component-content">
+                    Rather than asking <em>"What does this model predict?"</em>, Constructor Theory asks:<br><br>
+                    
+                    <strong>🔹 Which transformations are POSSIBLE?</strong><br>
+                    • Can we transform raw credit data into reliable risk predictions?<br>
+                    • Can we transform predictions into trustworthy explanations?<br><br>
+                    
+                    <strong>🔹 Which transformations are IMPOSSIBLE?</strong><br>
+                    • Can we guarantee explanations are stable across multiple runs?<br>
+                    • Can we reverse-engineer the true causal structure from SHAP values?<br><br>
+                    
+                    <strong>🔹 What are the CONSTRAINTS?</strong><br>
+                    • Data quality, feature stability, attribution robustness, physical laws of information
+                </div>
+            </div>
+        </div>
+        
+        <!-- SECTION 2: SUBSTRATES IN CREDIT RISK -->
+        <div class="section">
+            <h2>2️⃣ SUBSTRATES: The Physical Entities Being Transformed</h2>
+            
+            <div class="component">
+                <div class="component-title">What is a Substrate?</div>
+                <div class="component-content">
+                    A <strong>substrate</strong> is any physical entity that can undergo transformation. In Constructor Theory, substrates are not abstract—they exist in specific physical states that can be measured and changed.
+                </div>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">Primary Substrates in Our Framework</div>
+                <div class="component-content">
+                    <table>
+                        <tr>
+                            <th>Substrate</th>
+                            <th>Initial State</th>
+                            <th>Target State</th>
+                            <th>Physical Medium</th>
+                        </tr>
+                        <tr>
+                            <td><strong>S₁: Credit Data</strong></td>
+                            <td>Raw borrower attributes<br>(age, income, duration, etc.)</td>
+                            <td>Preprocessed feature matrix<br>(standardized, encoded)</td>
+                            <td>Database records, CSV files</td>
+                        </tr>
+                        <tr>
+                            <td><strong>S₂: Feature Space</strong></td>
+                            <td>All 20+ original features</td>
+                            <td>Stabilized top-k features<br>(dual-selector output)</td>
+                            <td>Numerical vectors</td>
+                        </tr>
+                        <tr>
+                            <td><strong>S₃: Model Predictions</strong></td>
+                            <td>Probability scores [0,1]</td>
+                            <td>Binary classifications<br>(default/non-default)</td>
+                            <td>Model output arrays</td>
+                        </tr>
+                        <tr>
+                            <td><strong>S₄: Attributions</strong></td>
+                            <td>Black-box model decisions</td>
+                            <td>SHAP value vectors</td>
+                            <td>Numerical feature importance scores</td>
+                        </tr>
+                        <tr>
+                            <td><strong>S₅: Natural Language</strong></td>
+                            <td>Numerical SHAP values</td>
+                            <td>Human-readable explanations<br>+ reliability warnings</td>
+                            <td>Text strings (LLM output)</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">Key Insight: Substrate Composability</div>
+                <div class="component-content">
+                    Our framework requires a <strong>composite substrate</strong>:<br>
+                    <span class="notation">S_composite = S₁ ⊕ S₂ ⊕ S₃ ⊕ S₄ ⊕ S₅</span><br><br>
+                    
+                    Each transformation stage depends on the previous substrate state. The final explanation reliability depends on maintaining substrate integrity throughout the pipeline.
+                </div>
+            </div>
+        </div>
+        
+        <!-- SECTION 3: TASKS AND TRANSFORMATIONS -->
+        <div class="section">
+            <h2>3️⃣ TASKS: Transformations We Want to Perform</h2>
+            
+            <div class="component possible">
+                <div class="component-title">Task T₁: Data Preprocessing ✓ POSSIBLE</div>
+                <div class="component-content">
+                    <span class="notation">T₁ = {(Raw data, missing values) → (Clean data, imputed, standardized)}</span><br><br>
+                    
+                    <strong>Why it's possible:</strong><br>
+                    • Median/mode imputation is deterministic<br>
+                    • One-hot encoding preserves information<br>
+                    • Z-score standardization is reversible<br>
+                    • SMOTE applied within CV folds prevents leakage<br><br>
+                    
+                    <strong>Constructor:</strong> Preprocessing pipeline (scikit-learn)<br>
+                    <strong>Constraint:</strong> Must preserve data integrity
+                </div>
+            </div>
+            
+            <div class="component possible">
+                <div class="component-title">Task T₂: Feature Stabilization ✓ POSSIBLE</div>
+                <div class="component-content">
+                    <span class="notation">T₂ = {(All features) → (Stabilized top-k features)}</span><br><br>
+                    
+                    <strong>Why it's possible:</strong><br>
+                    • Dual-selector mechanism: RF importance ⊗ L1-Logistic coefficients<br>
+                    • Combines nonlinear interactions + sparse linear structure<br>
+                    • Composite score: I<sub>c</sub> = ½(norm(Imp<sub>RF</sub>) + norm(Imp<sub>L1</sub>))<br><br>
+                    
+                    <strong>Constructor:</strong> Zeng et al.'s Feature Selector-Classifier Optimization Framework<br>
+                    <strong>Output:</strong> Top features = {duration, amount, checking_status, age, credit_history}<br>
+                    <strong>Key result:</strong> These features remain stable across different model families
+                </div>
+            </div>
+            
+            <div class="component possible">
+                <div class="component-title">Task T₃: Predictive Modeling ✓ POSSIBLE</div>
+                <div class="component-content">
+                    <span class="notation">T₃ = {(Stabilized features) → (Default probability [0,1])}</span><br><br>
+                    
+                    <strong>Why it's possible:</strong><br>
+                    • Multiple constructors available: Logistic Regression, Random Forest, Boosting, Neural Networks<br>
+                    • Calibration ensures probability interpretation<br>
+                    • Cross-validation provides unbiased estimates<br><br>
+                    
+                    <strong>Best Constructor:</strong> Bagged Neural Network (BagNN)<br>
+                    • AUC = 0.809 <span class="metric-badge badge-high">EXCELLENT</span><br>
+                    • KS = 0.526 <span class="metric-badge badge-high">STRONG</span><br>
+                    • Brier Score = 0.174 <span class="metric-badge badge-medium">GOOD</span>
+                </div>
+            </div>
+            
+            <div class="component uncertain">
+                <div class="component-title">Task T₄: Attribution Generation ⚠️ POSSIBLE BUT UNSTABLE</div>
+                <div class="component-content">
+                    <span class="notation">T₄ = {(Model predictions) → (SHAP feature attributions)}</span><br><br>
+                    
+                    <strong>Why it's possible (technically):</strong><br>
+                    • SHAP algorithm is well-defined and computable<br>
+                    • Game-theoretic foundation (Shapley values)<br>
+                    • Implemented in reliable software (shap library)<br><br>
+                    
+                    <strong>⚠️ BUT: Severe reliability issues detected</strong><br>
+                    • <strong>Sanity Ratio ≈ 1.015</strong> (barely above random noise threshold of 1.0)<br>
+                    • Attribution signal only 1.5% stronger than random permutation baseline<br>
+                    • High variance across bootstrap samples<br>
+                    • Sensitive to background distribution choice<br><br>
+                    
+                    <strong>Critical finding:</strong> The transformation is <em>computable</em> but not <em>reliable</em>. This is Constructor Theory's distinction between "possible in principle" vs. "robust in practice."
+                </div>
+            </div>
+            
+            <div class="component possible">
+                <div class="component-title">Task T₅: Explanation Generation ✓ POSSIBLE WITH CONSTRAINTS</div>
+                <div class="component-content">
+                    <span class="notation">T₅ = {(SHAP values, Reliability diagnostics) → (Natural language + warnings)}</span><br><br>
+                    
+                    <strong>Why it's possible:</strong><br>
+                    • Generative AI can convert numbers to natural language<br>
+                    • Constrained prompting prevents hallucination<br>
+                    • Reliability scores embedded in output<br><br>
+                    
+                    <strong>Constructor:</strong> Large Language Model (LLM) with epistemic constraints<br>
+                    <strong>Key innovation:</strong> Unlike typical XAI approaches, we <em>never hide uncertainty</em>—reliability diagnostics are surfaced explicitly to users
+                </div>
+            </div>
+        </div>
+        
+        <!-- SECTION 4: THE IMPOSSIBLE TASK -->
+        <div class="section">
+            <h2>4️⃣ THE IMPOSSIBLE TASK: Why Reverse Transformation Fails</h2>
+            
+            <div class="component impossible">
+                <div class="component-title">Task T₄~ : Reverse Attribution ✘ IMPOSSIBLE</div>
+                <div class="component-content">
+                    <span class="notation">T₄~ = {(SHAP values) → (True causal structure)}</span><br><br>
+                    
+                    <strong>Why it's IMPOSSIBLE:</strong><br><br>
+                    
+                    <strong>1. Information Loss (Irreversibility)</strong><br>
+                    • SHAP provides local linear approximations<br>
+                    • True model uses complex nonlinear interactions<br>
+                    • Cannot recover original decision boundaries from marginal attributions<br>
+                    • Like trying to reconstruct a 3D object from its 2D shadow<br><br>
+                    
+                    <strong>2. Non-Uniqueness Problem</strong><br>
+                    • Multiple different models can produce similar SHAP patterns<br>
+                    • Correlation ≠ Causation<br>
+                    • Example: "Age" high SHAP value could mean:<br>
+                    &nbsp;&nbsp;→ Age directly affects default risk (causal)<br>
+                    &nbsp;&nbsp;→ Age correlates with credit history (confounded)<br>
+                    &nbsp;&nbsp;→ Model overfit to age-related patterns (spurious)<br><br>
+                    
+                    <strong>3. Adversarial Vulnerability</strong><br>
+                    • Slack et al. (2020) showed SHAP can be "fooled"<br>
+                    • Malicious actors can design models that pass SHAP audit but behave badly<br>
+                    • Verification is fundamentally harder than generation<br><br>
+                    
+                    <strong>Constructor Theory perspective:</strong><br>
+                    This asymmetry (T₄ ✓ but T₄~ ✘) reveals a fundamental <em>arrow of explanation</em>—we can generate attributions from models, but cannot guarantee those attributions reflect true causal structure.
+                </div>
+            </div>
+            
+            <div class="insight-box">
+                <h3>🎯 The Core Research Contribution</h3>
+                <p style="font-size: 1.05em;">
+                    Traditional XAI treats explanations as <strong>descriptive outputs</strong>—you run SHAP and get answers. 
+                    Our framework treats explanations as <strong>empirical claims</strong> that must be tested for reliability.
+                </p>
+                <p style="font-size: 1.05em;">
+                    <strong>By making the "impossible task" explicit</strong>, we force practitioners to acknowledge:
+                </p>
+                <ul>
+                    <li>High AUC does NOT guarantee trustworthy explanations</li>
+                    <li>Explanations require independent validation beyond predictive metrics</li>
+                    <li>Uncertainty quantification is not optional—it's essential</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- SECTION 5: CONSTRUCTORS -->
+        <div class="section">
+            <h2>5️⃣ CONSTRUCTORS: The Mechanisms That Perform Tasks</h2>
+            
+            <div class="component">
+                <div class="component-title">What is a Constructor?</div>
+                <div class="component-content">
+                    A <strong>constructor</strong> is a physical system that can perform a task repeatedly while maintaining its own structure. Crucially, constructors don't just "do things once"—they must be <em>reusable</em> and <em>stable</em>.
+                </div>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">Constructor C₁: Preprocessing Pipeline</div>
+                <div class="component-content">
+                    <strong>Physical Implementation:</strong> Python scikit-learn transformers<br>
+                    <strong>Performs:</strong> Task T₁ (Data cleaning)<br>
+                    <strong>Stability:</strong> ✓ Deterministic transformations<br>
+                    <strong>Reusability:</strong> ✓ Can process new data with same logic<br>
+                    <strong>Degradation:</strong> None (software is perfectly reproducible)
+                </div>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">Constructor C₂: Dual-Selector Feature Engine</div>
+                <div class="component-content">
+                    <strong>Physical Implementation:</strong> Hybrid RF + L1-Logistic system<br>
+                    <strong>Performs:</strong> Task T₂ (Feature stabilization)<br>
+                    <strong>Stability:</strong> ✓ Composite scoring reduces variance<br>
+                    <strong>Innovation:</strong> Combines complementary selection principles<br>
+                    • RF captures nonlinear importance<br>
+                    • L1-Logistic captures sparse linear structure<br>
+                    • Averaging mitigates single-method bias
+                </div>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">Constructor C₃: Model Family Zoo (106 Configurations)</div>
+                <div class="component-content">
+                    <strong>Performs:</strong> Task T₃ (Predictive modeling)<br><br>
+                    
+                    <strong>Tested Constructor Types:</strong><br>
+                    • <strong>Linear Models:</strong> Logistic Regression (regularized/unregularized)<br>
+                    • <strong>Boosting:</strong> AdaBoost, Gradient Boosting, XGBoost, LightGBM<br>
+                    • <strong>Bagging:</strong> Random Forest, Bagged Trees, Bagged Neural Networks<br>
+                    • <strong>Instance-Based:</strong> K-Nearest Neighbors (tuned)<br><br>
+                    
+                    <strong>Selection Criterion:</strong> Highest AUC per family, then global benchmark<br>
+                    <strong>Winner:</strong> BagNN-100 (AUC=0.809, KS=0.526, H=0.373)<br><br>
+                    
+                    <strong>Key Finding:</strong> Regularized Logistic Regression (AUC=0.803) remains competitive—simplicity doesn't always sacrifice accuracy
+                </div>
+            </div>
+            
+            <div class="component uncertain">
+                <div class="component-title">Constructor C₄: SHAP Explainer ⚠️ LIMITED RELIABILITY</div>
+                <div class="component-content">
+                    <strong>Physical Implementation:</strong> TreeExplainer / KernelExplainer<br>
+                    <strong>Performs:</strong> Task T₄ (Attribution generation)<br>
+                    <strong>Algorithm:</strong> Shapley value estimation via game theory<br><br>
+                    
+                    <strong>⚠️ Reliability Issues:</strong><br>
+                    • <strong>Sanity Ratio = 1.015</strong> (expected: >1.5 for reliable signal)<br>
+                    • Attributions barely distinguishable from random baseline<br>
+                    • High sensitivity to background distribution<br>
+                    • Variance across bootstrap samples<br><br>
+                    
+                    <strong>Implications:</strong><br>
+                    This constructor is <em>functional</em> (it runs without error) but <em>unreliable</em> (outputs are noisy). 
+                    Constructor Theory distinguishes between "mechanism exists" and "mechanism is trustworthy."
+                </div>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">Constructor C₅: Constrained Generative AI</div>
+                <div class="component-content">
+                    <strong>Physical Implementation:</strong> Large Language Model with structured prompts<br>
+                    <strong>Performs:</strong> Task T₅ (Explanation generation)<br>
+                    <strong>Key Constraint:</strong> Must include reliability warnings from diagnostics<br><br>
+                    
+                    <strong>Epistemic Safeguards:</strong><br>
+                    • Cannot fabricate confident explanations when Sanity Ratio < 1.2<br>
+                    • Must explicitly state: "Explanation reliability: LOW"<br>
+                    • Prevents narrative inflation and hallucination<br>
+                    • Surfaces uncertainty rather than hiding it<br><br>
+                    
+                    <strong>Innovation:</strong> Unlike typical XAI + LLM approaches (which prioritize fluency), ours prioritizes <em>epistemic honesty</em>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SECTION 6: TASK COMPOSITION -->
+        <div class="section">
+            <h2>6️⃣ TASK COMPOSITION: Building Complex from Simple</h2>
+            
+            <div class="component">
+                <div class="component-title">Serial Composition: The Complete Pipeline</div>
+                <div class="component-content">
+                    <span class="notation">T_complete = T₁ · T₂ · T₃ · T₄ · T₅</span><br><br>
+                    
+                    <strong>Read as:</strong> "First do T₁, then T₂, then T₃, then T₄, then T₅"<br><br>
+                    
+                    <div class="flow-diagram">
+                        <div class="box">Raw Data</div>
+                        <div class="flow-arrow">⬇ T₁</div>
+                        <div class="box box-secondary">Clean Data</div>
+                        <div class="flow-arrow">⬇ T₂</div>
+                        <div class="box box-tertiary">Stable Features</div>
+                        <div class="flow-arrow">⬇ T₃</div>
+                        <div class="box">Risk Predictions</div>
+                        <div class="flow-arrow">⬇ T₄</div>
+                        <div class="box box-secondary">SHAP Values</div>
+                        <div class="flow-arrow">⬇ T₅</div>
+                        <div class="box box-tertiary">Explanations + Warnings</div>
+                    </div>
+                    
+                    <strong>Critical Property:</strong> Each task's output becomes the next task's input<br>
+                    <strong>Failure Mode:</strong> If any T<sub>i</sub> fails or produces unreliable output, entire pipeline degrades
+                </div>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">Parallel Composition: Model Benchmarking</div>
+                <div class="component-content">
+                    <span class="notation">T₃_benchmark = T₃^(LR) ⊗ T₃^(RF) ⊗ T₃^(Boost) ⊗ T₃^(BagNN) ⊗ ...</span><br><br>
+                    
+                    <strong>Read as:</strong> "Run all 106 model configurations in parallel on same data"<br><br>
+                    
+                    <strong>Why parallel composition matters:</strong><br>
+                    • We don't assume one model family is superior a priori<br>
+                    • Constructor Theory says: Test which tasks are actually possible<br>
+                    • Different constructors may have different task feasibility<br><br>
+                    
+                    <strong>Result:</strong> BagNN emerges as strongest constructor for T₃, but explanation quality (T₄) varies <em>independently</em> of prediction quality
+                </div>
+            </div>
+        </div>
+        
+        <!-- SECTION 7: RELIABILITY DIAGNOSTICS -->
+        <div class="section">
+            <h2>7️⃣ RELIABILITY DIAGNOSTICS: Testing Explanation Quality</h2>
+            
+            <div class="component">
+                <div class="component-title">The Reliability Layer: What Makes It Novel</div>
+                <div class="component-content">
+                    Traditional XAI workflow:<br>
+                    <span class="notation">Model → SHAP → Explanation → ✓ Done</span><br><br>
+                    
+                    Our Constructor Theory workflow:<br>
+                    <span class="notation">Model → SHAP → <span class="highlight-yellow">Reliability Tests</span> → Explanation + Warnings → ✓ Done</span><br><br>
+                    
+                    <strong>The reliability layer asks:</strong> "Is this explanation trustworthy, or just noise?"
+                </div>
+            </div>
+            
+            <div class="component uncertain">
+                <div class="component-title">Diagnostic Metric 1: Sanity Ratio</div>
+                <div class="component-content">
+                    <strong>Definition:</strong><br>
+                    Sanity Ratio = (True model SHAP signal) / (Random permutation baseline signal)<br><br>
+                    
+                    <strong>Interpretation:</strong><br>
+                    • <strong>SR > 1.5:</strong> Explanation is reliably distinguishable from random <span class="metric-badge badge-high">GOOD</span><br>
+                    • <strong>1.2 < SR < 1.5:</strong> Weak signal, use with caution <span class="metric-badge badge-medium">UNCERTAIN</span><br>
+                    • <strong>SR < 1.2:</strong> Explanation unreliable, mostly noise <span class="metric-badge badge-low">POOR</span><br><br>
+                    
+                    <strong>Our result:</strong><br>
+                    <span class="notation">Sanity Ratio ≈ 1.015</span> <span class="metric-badge badge-low">UNRELIABLE</span><br><br>
+                    
+                    <strong>Meaning:</strong> Despite BagNN's excellent AUC (0.809), its explanations are only 1.5% better than random guessing. 
+                    This is the paper's central finding: <em>predictive accuracy ≠ explanation reliability</em>.
+                </div>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">Diagnostic Metric 2: Attribution Stability</div>
+                <div class="component-content">
+                    <strong>Test procedure:</strong><br>
+                    1. Compute SHAP on original model<br>
+                    2. Bootstrap resample data and recompute SHAP<br>
+                    3. Measure coefficient of variation (CV) across runs<br><br>
+                    
+                    <strong>Interpretation:</strong><br>
+                    • <strong>CV < 0.2:</strong> Stable attributions <span class="metric-badge badge-high">RELIABLE</span><br>
+                    • <strong>0.2 < CV < 0.5:</strong> Moderate variance <span class="metric-badge badge-medium">CAUTION</span><br>
+                    • <strong>CV > 0.5:</strong> Highly unstable <span class="metric-badge badge-low">UNRELIABLE</span><br><br>
+                    
+                    <strong>Key finding:</strong> Even "dominant" features (duration, amount) show substantial variance—explanations are fragile
+                </div>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">Why Randomization-Based Testing?</div>
+                <div class="component-content">
+                    Constructor Theory emphasizes <strong>counterfactual robustness</strong>: A transformation is only "possible" if it remains stable under perturbation.<br><br>
+                    
+                    <strong>Our application:</strong><br>
+                    • If explanations were truly capturing model structure, they should be robust to modest data variation<br>
+                    • If explanations collapse under randomization, they're artefacts, not structural signals<br>
+                    • This is analogous to testing whether a "constructor" (SHAP) actually performs its claimed task reliably
+                </div>
+            </div>
+        </div>
+        
+        <!-- SECTION 8: THE EPISTEMIC PARADOX -->
+        <div class="section">
+            <h2>8️⃣ THE EPISTEMIC PARADOX: High Performance ≠ Reliable Explanation</h2>
+            
+            <div class="insight-box" style="background: linear-gradient(135deg, #ffebee, #ffcdd2);">
+                <h3>⚠️ The Central Paradox</h3>
+                <p style="font-size: 1.15em; line-height: 1.8;">
+                    <strong>Bagged Neural Network (BagNN-100):</strong><br>
+                    • Predictive Performance: AUC = 0.809 <span class="metric-badge badge-high">EXCELLENT</span><br>
+                    • Explanation Reliability: Sanity Ratio = 1.015 <span class="metric-badge badge-low">TERRIBLE</span><br><br>
+                    
+                    <strong>Constructor Theory interpretation:</strong><br>
+                    Task T₃ (prediction) is <em>robustly possible</em> ✓<br>
+                    Task T₄ (reliable attribution) is <em>weakly possible or impossible</em> ✘
+                </p>
+            </div>
+            
+            <div class="comparison">
+                <div class="comparison-item">
+                    <h4>Traditional View (WRONG)</h4>
+                    <p>"My model has 80% AUC, so I can trust its SHAP values to tell me why it works."</p>
+                    <p><strong>Assumption:</strong> Predictive accuracy implies explanatory validity</p>
+                </div>
+                <div class="comparison-item">
+                    <h4>Constructor Theory View (CORRECT)</h4>
+                    <p>"My model has 80% AUC, which tells me prediction is possible. Explanation reliability must be tested separately."</p>
+                    <p><strong>Principle:</strong> Each task requires independent validation</p>
+                </div>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">Why Does This Happen?</div>
+                <div class="component-content">
+                    <strong>1. Ensemble Voting Obscures Individual Signals</strong><br>
+                    • BagNN = 100 neural networks voting<br>
+                    • Each NN might use different feature combinations<br>
+                    • SHAP tries to "average" across these—signal gets washed out<br><br>
+                    
+                    <strong>2. SHAP Assumes Additive Structure</strong><br>
+                    • SHAP decomposes predictions as: f(x) = φ₀ + Σ φᵢ<br>
+                    • But neural networks use complex non-additive interactions<br>
+                    • Linear approximation loses interaction structure<br><br>
+                    
+                    <strong>3. Background Distribution Sensitivity</strong><br>
+                    • SHAP values depend on choice of "baseline" distribution<br>
+                    • Different baselines → different attributions<br>
+                    • No unique "correct" choice<br><br>
+                    
+                    <strong>Constructor Theory lesson:</strong> Explainability is not a property of the model alone—it's a property of the <em>model + explanation method + data distribution</em> system.
+                </div>
+            </div>
+        </div>
+        
+        <!-- SECTION 9: CONSTRAINED GENERATIVE AI -->
+        <div class="section">
+            <h2>9️⃣ CONSTRAINED GENERATIVE AI: Preventing Hallucination</h2>
+            
+            <div class="component">
+                <div class="component-title">The Generative AI Risk</div>
+                <div class="component-content">
+                    Modern XAI increasingly uses LLMs to translate SHAP values into natural language explanations. But LLMs are trained to be fluent and confident—even when they shouldn't be.<br><br>
+                    
+                    <strong>Unconstrained LLM output:</strong><br>
+                    <em>"The model predicts high default risk primarily because the loan duration is 48 months. This extended timeframe increases exposure to economic fluctuations and borrower circumstances changes, making repayment less likely. Additionally, the credit amount of €4,308 combined with the borrower's age of 24 suggests insufficient financial maturity and income stability..."</em><br><br>
+                    
+                    <strong>Problems:</strong><br>
+                    ✘ Sounds authoritative but is entirely based on unreliable SHAP values (SR=1.015)<br>
+                    ✘ Makes causal claims ("makes repayment less likely") that cannot be verified<br>
+                    ✘ Narrative inflation creates false confidence<br>
+                    ✘ No mention that explanation might be noise
+                </div>
+            </div>
+            
+            <div class="component possible">
+                <div class="component-title">Our Constrained Approach ✓</div>
+                <div class="component-content">
+                    <strong>Constrained LLM output:</strong><br>
+                    <em>"⚠️ EXPLANATION RELIABILITY: LOW (Sanity Ratio = 1.015)</em><br><br>
+                    
+                    <em>The model attributes high default risk to longer loan duration (48 months) and larger credit amount (€4,308). However, <strong>reliability diagnostics indicate these attributions are only marginally stronger than random noise</strong>. These features may correlate with default risk in the training data, but the model's internal reasoning about them is not robustly interpretable.</em><br><br>
+                    
+                    <em>Recommendation: Use model predictions for risk ranking, but do not rely on feature attributions for causal understanding or policy decisions without additional validation."</em><br><br>
+                    
+                    <strong>Why this is better:</strong><br>
+                    ✓ Surfaces uncertainty explicitly<br>
+                    ✓ Avoids false causal claims<br>
+                    ✓ Guides user expectations appropriately<br>
+                    ✓ Maintains scientific honesty
+                </div>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">Constructor Theory Principle: Epistemic Constraints as Physical Laws</div>
+                <div class="component-content">
+                    Just as physical laws constrain which transformations are possible (you can't create energy from nothing), <strong>epistemic constraints</strong> should limit which explanations an AI system can generate.<br><br>
+                    
+                    <span class="notation">Constraint: Confidence(Explanation) ≤ Reliability(Attribution)</span><br><br>
+                    
+                    Our framework enforces this by making the LLM's prompt <em>conditional</em> on reliability diagnostics. Low sanity ratio → explanation must include warnings.
+                </div>
+            </div>
+        </div>
+        
+        <!-- SECTION 10: IMPLICATIONS -->
+        <div class="section">
+            <h2>🔟 IMPLICATIONS FOR CREDIT RISK GOVERNANCE</h2>
+            
+            <div class="component">
+                <div class="component-title">1. Regulatory Compliance (Basel, GDPR, SR 11-7)</div>
+                <div class="component-content">
+                    <strong>Current Practice:</strong> Financial institutions provide SHAP-based explanations to regulators to demonstrate model interpretability.<br><br>
+                    
+                    <strong>Problem:</strong> If explanations have low reliability (SR < 1.2), they don't actually satisfy "right to explanation" requirements—they're just sophisticated-looking noise.<br><br>
+                    
+                    <strong>Our Solution:</strong> Reliability diagnostics provide <em>auditable proof</em> that explanations were tested, not just generated. Regulators can demand: "What is your model's Sanity Ratio?"
+                </div>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">2. Model Risk Management</div>
+                <div class="component-content">
+                    <strong>Traditional approach:</strong> Validate models based on AUC, KS, back-testing.<br><br>
+                    
+                    <strong>Missing piece:</strong> Explanation reliability is never tested.<br><br>
+                    
+                    <strong>Constructor Theory approach:</strong> Treat explanation reliability as a <em>first-class validation metric</em>. Models should not be deployed if explanations fail sanity checks, even if predictions are accurate.
+                </div>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">3. Fair Lending and Bias Detection</div>
+                <div class="component-content">
+                    <strong>Current approach:</strong> Use SHAP to check if protected attributes (race, gender) have high importance → if yes, model is biased.<br><br>
+                    
+                    <strong>Problem:</strong> If SHAP is unreliable (SR ≈ 1.0), this test is meaningless. You might flag a model as "biased" when SHAP values are just noise.<br><br>
+                    
+                    <strong>Our framework:</strong> Only trust fairness audits if attributions pass reliability tests. Otherwise, use alternative methods (e.g., outcome disparities, counterfactual fairness).
+                </div>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">4. Scientific Integrity in ML Research</div>
+                <div class="component-content">
+                    <strong>Current problem:</strong> Papers frequently show "SHAP plots" without testing whether those plots are stable or meaningful.<br><br>
+                    
+                    <strong>Constructor Theory standard:</strong> Explanations should be treated as <em>empirical claims</em> requiring validation, not as visualization artifacts to be accepted uncritically.<br><br>
+                    
+                    <strong>Recommended practice:</strong> Always report:<br>
+                    • Sanity Ratio<br>
+                    • Attribution stability (bootstrap CV)<br>
+                    • Sensitivity to background distribution<br>
+                    • Explicit uncertainty warnings in narrative explanations
+                </div>
+            </div>
+        </div>
+        
+        <!-- SECTION 11: COMPLETE FORMAL FRAMEWORK -->
+        <div class="section">
+            <h2>1️⃣1️⃣ COMPLETE FORMAL REPRESENTATION</h2>
+            
+            <div class="code-block">
+// EXPLAINABLE CREDIT RISK: Constructor Theory Representation
+
+// ============================================================
+// 1. SUBSTRATES
+// ============================================================
+Substrate S₁ = {Raw credit data: age, income, duration, amount, history, ...}
+Substrate S₂ = {Stabilized features: top-k from dual-selector}
+Substrate S₃ = {Risk predictions: P(default) ∈ [0,1]}
+Substrate S₄ = {SHAP attributions: φ = [φ₁, φ₂, ..., φₖ]}
+Substrate S₅ = {Natural language explanation + reliability warnings}
+
+Composite substrate: S = S₁ ⊕ S₂ ⊕ S₃ ⊕ S₄ ⊕ S₅
+
+// ============================================================
+// 2. TASKS
+// ============================================================
+Task T₁ = {S₁ → S₂}  // Data preprocessing + feature stabilization
+  Status: ✓ POSSIBLE
+  Constructor: Dual-selector (RF + L1-Logistic)
+
+Task T₂ = {S₂ → S₃}  // Predictive modeling
+  Status: ✓ POSSIBLE (multiple constructors available)
+  Best constructor: BagNN-100 (AUC=0.809, KS=0.526)
+
+Task T₃ = {S₃ → S₄}  // Attribution generation
+  Status: ⚠️ POSSIBLE but UNRELIABLE
+  Constructor: SHAP (TreeExplainer / KernelExplainer)
+  Reliability: Sanity Ratio = 1.015 (barely above noise)
+
+Task T₄ = {S₄ → S₅}  // Explanation generation
+  Status: ✓ POSSIBLE with epistemic constraints
+  Constructor: Constrained LLM
+  Constraint: Confidence ≤ Reliability
+
+// ============================================================
+// 3. IMPOSSIBLE TASK (The Core Finding)
+// ============================================================
+Task T₃~ = {S₄ → (True causal structure)}  // Reverse attribution
+  Status: ✘ IMPOSSIBLE
+
+Why T₃~ is impossible:
+• Information loss: SHAP linear approximation loses nonlinear structure
+• Non-uniqueness: Multiple models → same SHAP patterns
+• Adversarial vulnerability: SHAP can be fooled (Slack et al.)
+• Correlation ≠ causation: High φᵢ doesn't mean feature i is causal
+
+Constructor Theory insight: 
+  T₃ ✓ ∧ T₃~ ✘  ⟹  Explanation is irreversible
+                     Cannot guarantee truth from SHAP alone
+
+// ============================================================
+// 4. RELIABILITY DIAGNOSTICS
+// ============================================================
+Diagnostic D₁: Sanity Ratio (SR)
+  SR = (True model signal) / (Random permutation baseline)
+  Threshold: SR > 1.5 for reliable explanation
+  Result: SR = 1.015 ⟹ Explanation UNRELIABLE
+
+Diagnostic D₂: Attribution Stability
+  Method: Bootstrap resampling + coefficient of variation
+  Threshold: CV < 0.2 for stable attribution
+  Result: High variance even for "dominant" features
+
+// ============================================================
+// 5. TASK COMPOSITION
+// ============================================================
+Serial composition (complete pipeline):
+  T_complete = T₁ · T₂ · T₃ · T₄
+
+Parallel composition (model benchmarking):
+  T₂_benchmark = T₂^(LR) ⊗ T₂^(RF) ⊗ T₂^(Boost) ⊗ T₂^(BagNN) ⊗ ...
+  
+  106 configurations tested across 4 model families
+
+// ============================================================
+// 6. KEY PRINCIPLE
+// ============================================================
+High predictive accuracy (Task T₂ ✓) does NOT imply 
+reliable explanations (Task T₃ may be ✘)
+
+Each task requires INDEPENDENT validation
+Explanation reliability ≠ prediction performance
+
+// ============================================================
+// 7. CONSTRAINED GENERATIVE EXPLANATION
+// ============================================================
+Traditional: S₄ → S₅ (SHAP → Narrative)
+Our approach: (S₄, D₁, D₂) → S₅ (SHAP + Diagnostics → Narrative + Warnings)
+
+Epistemic constraint:
+  IF SR < 1.2 THEN Explanation MUST include reliability warning
+  ELSE IF 1.2 ≤ SR < 1.5 THEN Explanation SHOULD include caution note
+  ELSE Explanation can be confident (but still cite SR)
+
+// ============================================================
+// 8. FRAMEWORK OUTPUT
+// ============================================================
+Final deliverable:
+  {
+    model: BagNN-100,
+    performance: {AUC: 0.809, KS: 0.526, Brier: 0.174},
+    explanation: "Loan duration and credit amount drive predictions...",
+    reliability: {
+      sanity_ratio: 1.015,
+      status: "UNRELIABLE",
+      warning: "Attributions barely distinguishable from random noise"
+    },
+    recommendation: "Use model for risk ranking, not for causal inference"
+  }
+            </div>
+        </div>
+        
+        <!-- SECTION 12: KEY INSIGHTS -->
+        <div class="section">
+            <h2>🔑 KEY INSIGHTS FROM CONSTRUCTOR THEORY PERSPECTIVE</h2>
+            
+            <div class="component possible">
+                <div class="component-title">1. Explanation Reliability as a Falsifiable Hypothesis</div>
+                <div class="component-content">
+                    Traditional XAI treats explanations as <em>outputs</em>—you run SHAP and accept the results.<br><br>
+                    
+                    Constructor Theory reframes explanations as <em>claims about physical reality</em> that must be tested:<br>
+                    • Hypothesis: "Feature X is important to the model's decisions"<br>
+                    • Test: Does attribution remain stable under randomization? (Sanity Ratio test)<br>
+                    • Result: If SR ≈ 1.0, hypothesis is <strong>falsified</strong><br><br>
+                    
+                    This shifts explainability from storytelling to science.
+                </div>
+            </div>
+            
+            <div class="component possible">
+                <div class="component-title">2. Task Independence: Predictive ≠ Explanatory</div>
+                <div class="component-content">
+                    Constructor Theory treats prediction and explanation as <em>separate tasks</em> with <em>separate possibility/impossibility boundaries</em>.<br><br>
+                    
+                    • Task T₂ (prediction): AUC=0.809 ✓ <strong>POSSIBLE</strong><br>
+                    • Task T₃ (reliable attribution): SR=1.015 ✘ <strong>IMPOSSIBLE/WEAKLY POSSIBLE</strong><br><br>
+                    
+                    This explains why "high-performing models" often have terrible explanations—they're solving different problems under different constraints.
+                </div>
+            </div>
+            
+            <div class="component possible">
+                <div class="component-title">3. The Irreversibility of Explanation</div>
+                <div class="component-content">
+                    The impossibility of Task T₃~ (reverse attribution → causal structure) reveals a fundamental <em>arrow of explanation</em>:<br><br>
+                    
+                    • We can generate attributions from models (T₃ ✓)<br>
+                    • We cannot reconstruct true causes from attributions (T₃~ ✘)<br><br>
+                    
+                    This asymmetry is analogous to thermodynamic irreversibility—you can scramble an egg (increase entropy) but cannot unscramble it (decrease entropy). Similarly, you can <em>approximate</em> model behavior with SHAP but cannot <em>verify</em> those approximations capture reality.
+                </div>
+            </div>
+            
+            <div class="component possible">
+                <div class="component-title">4. Constructors vs. Universal Constructors</div>
+                <div class="component-content">
+                    • SHAP is a <strong>limited constructor</strong>—it can perform attribution tasks but cannot guarantee reliability<br>
+                    • A <strong>universal explainer</strong> would be able to reliably explain ANY model's decisions<br>
+                    • Our results suggest: Universal explainers may be <em>impossible</em> for complex black-box models<br><br>
+                    
+                    This parallels Constructor Theory's open question about whether universal constructors (systems that can perform ANY physically possible task) can exist.
+                </div>
+            </div>
+            
+            <div class="component possible">
+                <div class="component-title">5. Information as Physical Constraint</div>
+                <div class="component-content">
+                    The dual-selector feature stabilization mechanism treats information (feature importance) as a <em>physical resource</em> that must be conserved across different measurement methods:<br><br>
+                    
+                    • RF importance captures nonlinear interaction information<br>
+                    • L1-Logistic captures sparse linear structure information<br>
+                    • Averaging preserves information while reducing noise<br><br>
+                    
+                    This is substrate-independent: the <em>pattern</em> of importance matters, not the specific algorithm used to measure it.
+                </div>
+            </div>
+            
+            <div class="component possible">
+                <div class="component-title">6. Epistemic Constraints as Design Principles</div>
+                <div class="component-content">
+                    Just as physical laws constrain possible transformations, <strong>epistemic laws</strong> should constrain possible explanations:<br><br>
+                    
+                    • Physical law: Energy cannot be created from nothing<br>
+                    • Epistemic law: Confidence cannot exceed reliability<br><br>
+                    
+                    Our constrained generative AI enforces this: Low SR → explanation must include warnings. This prevents "epistemic violations" (false confidence) analogous to how physics prevents "thermodynamic violations" (perpetual motion).
+                </div>
+            </div>
+        </div>
+        
+        <!-- SECTION 13: EXPERIMENTAL RESULTS SUMMARY -->
+        <div class="section">
+            <h2>1️⃣3️⃣ EXPERIMENTAL RESULTS: German Credit Dataset</h2>
+            
+            <div class="component">
+                <div class="component-title">Dataset Characteristics</div>
+                <div class="component-content">
+                    <strong>Source:</strong> UCI Machine Learning Repository<br>
+                    <strong>Size:</strong> 1,000 borrowers (700 non-default, 300 default)<br>
+                    <strong>Features:</strong> 20 attributes (financial + demographic)<br>
+                    <strong>Task:</strong> Binary classification (default vs. non-default)<br>
+                    <strong>Class imbalance:</strong> Addressed via SMOTE within CV folds
+                </div>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">Top Features (Dual-Selector Output)</div>
+                <div class="component-content">
+                    <table>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Feature</th>
+                            <th>RF Importance</th>
+                            <th>L1 |Coef|</th>
+                            <th>Combined Score</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td><strong>months_duration</strong></td>
+                            <td>0.076</td>
+                            <td>1.983</td>
+                            <td>0.921</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><strong>credit_amount</strong></td>
+                            <td>0.090</td>
+                            <td>1.386</td>
+                            <td>0.849</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><strong>checking_status: no account</strong></td>
+                            <td>0.065</td>
+                            <td>1.130</td>
+                            <td>0.643</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><strong>age</strong></td>
+                            <td>0.073</td>
+                            <td>0.415</td>
+                            <td>0.508</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><strong>credit_history: critical</strong></td>
+                            <td>0.026</td>
+                            <td>1.094</td>
+                            <td>0.418</td>
+                        </tr>
+                    </table>
+                    
+                    <strong>Key finding:</strong> Financial exposure variables (duration, amount) dominate, followed by account status and borrower demographics
+                </div>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">Model Performance: Top Performers per Family</div>
+                <div class="component-content">
+                    <table>
+                        <tr>
+                            <th>Model Family</th>
+                            <th>Best Config</th>
+                            <th>AUC</th>
+                            <th>KS</th>
+                            <th>Brier</th>
+                            <th>H-measure</th>
+                        </tr>
+                        <tr>
+                            <td>Linear</td>
+                            <td>LR (Newton-CG)</td>
+                            <td>0.791</td>
+                            <td>0.541</td>
+                            <td>0.182</td>
+                            <td>0.327</td>
+                        </tr>
+                        <tr>
+                            <td>Regularized Linear</td>
+                            <td>LR-Reg (liblinear)</td>
+                            <td>0.803</td>
+                            <td>0.531</td>
+                            <td>0.179</td>
+                            <td>0.333</td>
+                        </tr>
+                        <tr>
+                            <td>AdaBoost</td>
+                            <td>AdaBoost-30</td>
+                            <td>0.776</td>
+                            <td>0.479</td>
+                            <td>0.177</td>
+                            <td>0.272</td>
+                        </tr>
+                        <tr>
+                            <td>Bagging (CART)</td>
+                            <td>Bag-CART-250</td>
+                            <td>0.767</td>
+                            <td>0.431</td>
+                            <td>0.171</td>
+                            <td>0.287</td>
+                        </tr>
+                        <tr style="background: #e8f5e9;">
+                            <td><strong>Bagging (NN)</strong></td>
+                            <td><strong>BagNN-100</strong></td>
+                            <td><strong>0.809</strong></td>
+                            <td><strong>0.526</strong></td>
+                            <td><strong>0.174</strong></td>
+                            <td><strong>0.373</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Boosting (DT)</td>
+                            <td>Boost-DT-1000×0.5</td>
+                            <td>0.803</td>
+                            <td>0.557</td>
+                            <td>0.161</td>
+                            <td>0.343</td>
+                        </tr>
+                        <tr>
+                            <td>K-NN</td>
+                            <td>KNN-11</td>
+                            <td>0.770</td>
+                            <td>0.510</td>
+                            <td>0.190</td>
+                            <td>0.283</td>
+                        </tr>
+                    </table>
+                    
+                    <strong>Winner:</strong> BagNN-100 (highest AUC and H-measure)<br>
+                    <strong>Runner-up:</strong> Regularized Logistic Regression (competitive performance, much simpler)
+                </div>
+            </div>
+            
+            <div class="component impossible">
+                <div class="component-title">⚠️ Explanation Reliability Results</div>
+                <div class="component-content">
+                    <strong>SHAP Global Attributions:</strong><br>
+                    • Top features: months_duration, credit_amount, age (consistent with dual-selector)<br>
+                    • Direction: Longer duration & higher amount → higher risk (intuitive)<br><br>
+                    
+                    <strong>Reliability Diagnostics:</strong><br>
+                    • <strong>Sanity Ratio = 1.015</strong> <span class="metric-badge badge-low">UNRELIABLE</span><br>
+                    • Attribution signal only 1.5% stronger than random baseline<br>
+                    • High bootstrap variance (CV > 0.3 for most features)<br>
+                    • Sensitive to background distribution choice<br><br>
+                    
+                    <strong>Critical conclusion:</strong><br>
+                    Despite BagNN's excellent predictive performance (AUC=0.809), its explanations are <em>not trustworthy</em>. This demonstrates the paper's core thesis: <strong>predictive accuracy ≠ explanation reliability</strong>.
+                </div>
+            </div>
+        </div>
+        
+        <!-- CLOSING SUMMARY -->
+        <div class="section" style="background: linear-gradient(135deg, #1e3c7215, #2a529815); border-left-color: #1e3c72;">
+            <h2>✨ SUMMARY: Constructor Theory's Value for Explainable AI</h2>
+            
+            <div class="insight-box">
+                <h3>What Constructor Theory Provides</h3>
+                <p style="font-size: 1.1em; line-height: 1.8;">
+                    Constructor Theory offers a <strong>unified language</strong> for understanding AI systems by asking:<br>
+                    <em>"Which transformations are possible, which are impossible, and why?"</em>
+                </p>
+                
+                <p style="font-size: 1.05em; line-height: 1.8;">
+                    <strong>Applied to credit-risk explainability, this framework reveals:</strong>
+                </p>
+                
+                <ul style="font-size: 1.05em; line-height: 1.8;">
+                    <li><strong>Tasks</strong> (prediction, attribution, explanation) have independent feasibility constraints</li>
+                    <li><strong>Substrates</strong> (data, features, predictions, SHAP values) undergo staged transformations</li>
+                    <li><strong>Constructors</strong> (models, SHAP, LLMs) vary in reliability even when functional</li>
+                    <li><strong>Impossible tasks</strong> (reverse attribution → causal truth) establish fundamental limits</li>
+                    <li><strong>Reliability diagnostics</strong> distinguish structural signal from noise</li>
+                    <li><strong>Constrained generation</strong> prevents epistemic violations (false confidence)</li>
+                </ul>
+                
+                <p style="font-size: 1.1em; line-height: 1.8; margin-top: 20px;">
+                    <strong>The central insight:</strong> High predictive accuracy does NOT guarantee reliable explanations. 
+                    Each task requires independent validation. Explanation reliability must be <em>tested</em>, not assumed.
+                </p>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">🎯 Research Contribution</div>
+                <div class="component-content">
+                    This work advances explainable credit-risk modelling from <strong>descriptive attribution</strong> (showing SHAP plots) 
+                    toward <strong>scientific explanation</strong> (testing whether attributions are trustworthy).<br><br>
+                    
+                    By embedding reliability diagnostics directly into the explanation pipeline, we provide financial institutions with:
+                    <ul>
+                        <li>Auditable evidence that explanations were validated, not just generated</li>
+                        <li>Transparent uncertainty quantification for regulatory compliance</li>
+                        <li>Protection against overconfident or hallucinated explanations</li>
+                        <li>A governance-oriented framework compatible with Basel model-risk standards</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="component">
+                <div class="component-title">🔮 Future Directions</div>
+                <div class="component-content">
+                    <strong>Open questions from Constructor Theory perspective:</strong><br><br>
+                    
+                    <strong>1. Universal Explainability:</strong> Does there exist a "universal explanation constructor" that can reliably explain ANY model? Or are some models fundamentally inexplicable?<br><br>
+                    
+                    <strong>2. Explanation-Preservation Laws:</strong> Under what conditions do explanations remain stable when models are retrained or data distributions shift?<br><br>
+                    
+                    <strong>3. Task Composition Limits:</strong> Can we formally characterize which task compositions (T₁ · T₂ · ... · Tₙ) preserve explanation reliability?<br><br>
+                    
+                    <strong>4. Counterfactual Explainability:</strong> Are counterfactual explanations more reliable than attribution-based explanations because they avoid the "impossible task" of reverse attribution?<br><br>
+                    
+                    <strong>5. Quantum-Inspired XAI:</strong> Could quantum computing provide explanation methods that overcome classical impossibility results (analogous to Shor's algorithm breaking RSA)?
+                </div>
+            </div>
+        </div>
+        
+        <!-- FINAL NOTATION LEGEND -->
+        <div class="section">
+            <h2>📖 MATHEMATICAL NOTATION LEGEND</h2>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="legend-symbol">→</span>
+                    <span><strong>Transformation:</strong> Input state transforms to output state</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-symbol">✓</span>
+                    <span><strong>Possible task:</strong> Transformation can be performed reliably</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-symbol">✘</span>
+                    <span><strong>Impossible task:</strong> Transformation cannot be performed or is unreliable</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-symbol">⊗</span>
+                    <span><strong>Parallel composition:</strong> Multiple tasks performed simultaneously</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-symbol">·</span>
+                    <span><strong>Serial composition:</strong> First task, then second task in sequence</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-symbol">⊕</span>
+                    <span><strong>Substrate composition:</strong> Combination of multiple substrates</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-symbol">~</span>
+                    <span><strong>Task transpose:</strong> Reverse transformation (swap inputs/outputs)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-symbol">{ }</span>
+                    <span><strong>Task set:</strong> Collection of all input-output pairs for a task</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-symbol">SR</span>
+                    <span><strong>Sanity Ratio:</strong> Explanation signal strength vs. random baseline</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-symbol">φ</span>
+                    <span><strong>SHAP values:</strong> Feature attribution scores (phi notation)</span>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: #f9f9f9; border-radius: 10px;">
+            <p style="font-size: 1.2em; color: #1e3c72; font-weight: bold;">
+                🏛️ Constructor Theory transforms explainable AI from storytelling to science 🏛️
+            </p>
+            <p style="font-size: 1em; color: #666; margin-top: 10px;">
+                Paper: "Integrating Predictive and Generative AI for Explainable Credit Risk"<br>
+                Framework: Unified Predictive-Explanatory Architecture with Reliability Diagnostics
+            </p>
+        </div>
+    </div>
+</body>
+</html>
